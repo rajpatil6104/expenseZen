@@ -34,7 +34,15 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 security = HTTPBearer()
 
 app = FastAPI()
+
+#This is for server not to sleep
+@app.get("/health")
+@app.get("/api/health")
+async def health_check():
+    return {"status": "ok"}
+
 api_router = APIRouter(prefix="/api")
+
 
 # Models
 class UserRegister(BaseModel):
