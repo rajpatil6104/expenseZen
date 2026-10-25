@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -177,28 +178,7 @@ export default function Dashboard({ user, onLogout }) {
 
   return (
     <div className="min-h-screen bg-background">
-      {/*<header className="bg-white/80 backdrop-blur-md border-b border-border shadow-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="bg-primary p-2 rounded-lg">
-              <Wallet className="h-6 w-6 text-primary-foreground" />
-            </div>
-            <h1 className="text-2xl font-bold" style={{ fontFamily: 'Manrope, sans-serif' }}>ExpenseZen</h1>
-          </div>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-muted-foreground">Hello, {user?.name}</span>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onLogout}
-              data-testid="logout-button"
-              className="hover:bg-muted">
-              <LogOut className="h-4 w-4 mr-2" />
-              Logout
-            </Button>
-          </div>
-        </div>
-      </header>*/}
+      
       <header className="bg-white/80 backdrop-blur-md border-b border-border shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           {/* Logo Section */}
@@ -237,40 +217,50 @@ export default function Dashboard({ user, onLogout }) {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/*<div className="flex items-center justify-between mb-8">
+      
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between mb-8">
+          {/* Left Section: Title & Subtitle */}
           <div>
             <h2
-              className="text-4xl font-bold mb-2"
+              className="text-3xl sm:text-4xl font-bold mb-1 sm:mb-2"
               style={{ fontFamily: "Manrope, sans-serif" }}
             >
               Dashboard
             </h2>
-            <p className="text-muted-foreground">
+            <p className="text-sm sm:text-base text-muted-foreground">
               Welcome back! Here's your expense overview
             </p>
           </div>
-          <div className="flex gap-3">
+
+          {/* Right Section: Action Buttons */}
+          <div className="flex gap-2 sm:gap-3">
             <Button
               variant="outline"
               onClick={() => navigate("/expenses")}
               data-testid="view-all-expenses-button"
-              className="h-11 rounded-lg"
+              className="flex-1 sm:flex-none h-10 sm:h-11 rounded-lg text-xs sm:text-sm px-3 sm:px-4"
             >
-              <List className="h-4 w-4 mr-2" />
-              View All Expenses
+              <List className="h-4 w-4 mr-1.5 sm:mr-2" />
+              <span className="inline">Expenses</span>
+              <span className="hidden xs:inline ml-1">View All</span>
             </Button>
+
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
               <DialogTrigger asChild>
                 <Button
                   data-testid="add-expense-button"
-                  className="h-11 bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg font-medium transition-all duration-200 shadow-sm hover:shadow-md"
+                  className="flex-1 sm:flex-none h-10 sm:h-11 bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg font-medium transition-all duration-200 shadow-sm hover:shadow-md text-xs sm:text-sm px-3 sm:px-4"
                 >
-                  <Plus className="h-4 w-4 mr-2" />
+                  <Plus className="h-4 w-4 mr-1.5 sm:mr-2" />
                   Add Expense
                 </Button>
               </DialogTrigger>
-              <DialogContent data-testid="add-expense-dialog">
-                <DialogHeader>
+              {/* Dialog content remains the same as it is already responsive by default in most UI libs */}
+              <DialogContent
+                data-testid="add-expense-dialog"
+                className="max-w-[95vw] sm:max-w-lg"
+              >
+<DialogHeader>
                   <DialogTitle>Add New Expense</DialogTitle>
                   <DialogDescription>
                     Enter the details of your expense
@@ -359,53 +349,6 @@ export default function Dashboard({ user, onLogout }) {
                     </Button>
                   </DialogFooter>
                 </form>
-              </DialogContent>
-            </Dialog>
-          </div>
-        </div>*/}
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between mb-8">
-          {/* Left Section: Title & Subtitle */}
-          <div>
-            <h2
-              className="text-3xl sm:text-4xl font-bold mb-1 sm:mb-2"
-              style={{ fontFamily: "Manrope, sans-serif" }}
-            >
-              Dashboard
-            </h2>
-            <p className="text-sm sm:text-base text-muted-foreground">
-              Welcome back! Here's your expense overview
-            </p>
-          </div>
-
-          {/* Right Section: Action Buttons */}
-          <div className="flex gap-2 sm:gap-3">
-            <Button
-              variant="outline"
-              onClick={() => navigate("/expenses")}
-              data-testid="view-all-expenses-button"
-              className="flex-1 sm:flex-none h-10 sm:h-11 rounded-lg text-xs sm:text-sm px-3 sm:px-4"
-            >
-              <List className="h-4 w-4 mr-1.5 sm:mr-2" />
-              <span className="inline">Expenses</span>
-              <span className="hidden xs:inline ml-1">View All</span>
-            </Button>
-
-            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-              <DialogTrigger asChild>
-                <Button
-                  data-testid="add-expense-button"
-                  className="flex-1 sm:flex-none h-10 sm:h-11 bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg font-medium transition-all duration-200 shadow-sm hover:shadow-md text-xs sm:text-sm px-3 sm:px-4"
-                >
-                  <Plus className="h-4 w-4 mr-1.5 sm:mr-2" />
-                  Add Expense
-                </Button>
-              </DialogTrigger>
-              {/* Dialog content remains the same as it is already responsive by default in most UI libs */}
-              <DialogContent
-                data-testid="add-expense-dialog"
-                className="max-w-[95vw] sm:max-w-lg"
-              >
-                {/* ... form content ... */}
               </DialogContent>
             </Dialog>
           </div>
@@ -559,41 +502,7 @@ export default function Dashboard({ user, onLogout }) {
           </Card>
         </div>
 
-        {/* <Card className="shadow-sm rounded-xl border-border">
-          <CardHeader>
-            <CardTitle style={{ fontFamily: "Manrope, sans-serif" }}>
-              Recent Expenses
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {recentExpenses.length > 0 ? (
-              <div className="space-y-3">
-                {recentExpenses.map((expense) => (
-                  <div
-                    key={expense.id}
-                    data-testid="recent-expense-item"
-                    className="flex items-center justify-between p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors duration-200"
-                  >
-                    <div>
-                      <p className="font-medium">{expense.description}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {expense.category} •{" "}
-                        {new Date(expense.date).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <div className="text-lg font-semibold">
-                      ₹{expense.amount.toFixed(2)}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-8 text-muted-foreground">
-                No expenses recorded yet. Start by adding your first expense!
-              </div>
-            )}
-          </CardContent>
-        </Card>*/}
+       
         <Card className="shadow-sm rounded-xl border-border">
           <CardHeader>
             <CardTitle style={{ fontFamily: "Manrope, sans-serif" }}>
