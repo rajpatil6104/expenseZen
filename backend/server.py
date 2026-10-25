@@ -25,7 +25,15 @@ client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
 # JWT Configuration
-SECRET_KEY = os.environ.get('JWT_SECRET_KEY', 'your-secret-key-change-in-production')
+SECRET_KEY = os.environ.get('JWT_SECRET_KEY')
+if not SECRET_KEY:
+    raise RuntimeError(
+        'JWT_SECRET_KEY is not set. Generate one with '
+        '`openssl rand -hex 32` and set it in backend/.env. '
+        'The server will not start without it.'
+    )
+if len(SECRET_KEY) < 32:
+    raise RuntimeError('JWT_SECRET_KEY must be at least 32 characters long.')
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_DAYS = 30
 
@@ -48,7 +56,7 @@ api_router = APIRouter(prefix="/api")
 class UserRegister(BaseModel):
     name: str
     email: EmailStr
-    password: str
+    password: str = Field(min_length=8, max_length=128)
 
 class UserLogin(BaseModel):
     email: EmailStr
@@ -398,10 +406,24 @@ async def get_budgets(user_id: str = Depends(get_current_user)):
 
 app.include_router(api_router)
 
+# CORS: default is local development only. In production set CORS_ORIGINS
+# to your exact frontend origin, e.g. https://expensezen.example.com
+# A wildcard origin is rejected because it cannot be used safely with
+# allow_credentials=True.
+_cors_origins = [
+    origin.strip()
+    for origin in os.environ.get('CORS_ORIGINS', 'http://localhost:3000').split(',')
+    if origin.strip()
+]
+if not _cors_origins or '*' in _cors_origins:
+    raise RuntimeError(
+        'CORS_ORIGINS must list explicit origins (no "*") when credentials are enabled.'
+    )
+
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
+    allow_origins=_cors_origins,
     allow_methods=["*"],
     allow_headers=["*"],
 )
